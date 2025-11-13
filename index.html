@@ -1,59 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Day 6 Plus - Realistic Nature Scene</title>
+    <meta charset="utf-8" />
+    <title>Concrete AR Demo</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+    </style>
   </head>
+
   <body>
-    <a-scene fog="type: linear; color: #e1a95f; near: 1; far: 35">
-      
-      <!-- 🌇 آسمان غروب -->
-      <a-sky src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" rotation="0 -90 0"></a-sky>
-
-      <!-- ☀️ نور خورشید و نور محیط -->
-      <a-entity light="type: ambient; intensity: 0.6; color: #ffd5a0"></a-entity>
-      <a-entity light="type: directional; intensity: 1; color: #ffcc88"
-                position="4 10 -3" rotation="-30 0 0" castShadow="true"></a-entity>
-
-      <!-- 🌿 زمین با چمن -->
-      <a-plane src="https://cdn.aframe.io/a-painter/images/floor.jpg"
-               rotation="-90 0 0"
-               width="100"
-               height="100"
-               repeat="60 60"
-               material="roughness: 1; metalness: 0.2">
-      </a-plane>
-
-      <!-- 💧 سطح آب بازتاب‌دار -->
-      <a-plane position="0 0.02 -10"
-               rotation="-90 0 0"
-               width="30"
-               height="30"
-               material="color: #88ccee; opacity: 0.6; metalness: 0.8; roughness: 0.1">
-      </a-plane>
-
-      <!-- 🌳 درخت -->
-      <a-entity gltf-model="https://cdn.aframe.io/test-models/models/tree/scene.gltf"
-                position="-2 0 -5"
-                scale="0.5 0.5 0.5"
-                shadow="cast: true">
-      </a-entity>
-
-      <!-- 🪨 سنگ -->
-      <a-entity gltf-model="https://cdn.aframe.io/test-models/models/rocks/scene.gltf"
-                position="1 0 -3"
-                scale="0.7 0.7 0.7"
-                shadow="cast: true">
-      </a-entity>
-
-      <!-- 🧱 چند جسم ساده -->
-      <a-sphere position="2 1.25 -6" radius="1.25" color="#EF2D5E" shadow></a-sphere>
-      <a-box position="-3 0.5 -4" depth="1" height="1" width="1" color="#4CC3D9" shadow></a-box>
-
-      <!-- 👀 دوربین با کنترل -->
-      <a-entity camera position="0 1.6 5" look-controls wasd-controls></a-entity>
-
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-box position="0 0.5 0" material="color: gray;"></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
