@@ -16,13 +16,30 @@
       <a-assets>
         <a-asset-item id="columnModel" src="column.glb"></a-asset-item>
       </a-assets>
+      <!-- ENV LIGHT -->
+      <a-entity light="type: ambient; intensity: 0.7"></a-entity>
+      <!-- DIC LIGHT -->
+      <a-entity light="type: directional; castShadow: true; intensity: 1" position="1 3 2"></a-entity>
+      
       <a-marker type="pattern" url="pattern-concrete.patt">
         <a-entity
           gltf-model="#columnModel"
-          position="0 0 0"
+          position="1 -5 0"
           rotation="-90 0 0"
-          scale="0.1 0.1 0.1"
+          scale="0.03 0.03 0.03"
+          shadow="cast: true; receive: true"
         ></a-entity>
+        
+        <!-- TRANPARENT EARTH -->
+        <a-plane position="0 0 0"
+             rotation="-90 0 0"
+             width="4"
+             height="4"
+             color="#ffffff"
+             opacity="0"
+             shadow="receive: true">
+        </a-plane>
+        
       </a-marker>
       <a-entity camera></a-entity>
     </a-scene>
