@@ -5,65 +5,53 @@
     <title>Concrete AR Demo</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-    <style> body{margin:0;overflow:hidden;} </style>
+    <style>body{margin:0;overflow:hidden;}</style>
   </head>
 
   <body>
-
     <a-scene
       embedded
       renderer="logarithmicDepthBuffer: true; colorManagement: true; shadowMapEnabled: true;"
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;
-            smoothing: true; smoothingFactor: 0.1;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; smoothing: true; smoothingFactor: 0.1;"
     >
 
-      <!-- SOURCE -->
       <a-assets>
         <a-asset-item id="columnModel" src="column.glb"></a-asset-item>
       </a-assets>
 
-      <!-- LIGHTS -->
+      <!-- نورها -->
       <a-entity light="type: ambient; intensity: 0.7"></a-entity>
-      <a-entity light="type: directional; castShadow: true; intensity: 1" position="1 3 2"></a-entity>
+      <a-entity light="type: directional; intensity: 1" position="1 3 2"></a-entity>
 
-      <!-- MARKER -->
       <a-marker type="pattern" url="pattern-concrete.patt">
 
-        <!-- MODEL (Clickable) -->
-        <a-entity
-          class="clickable"
-          gltf-model="#columnModel"
-          material="color: gray"
-          shadow="cast: true; receive: true"
-          scale="0.03 0.03 0.03"
-          position="0 0 0"
-          rotation="-90 0 0"
-          column-interaction
-        ></a-entity>
+        <!-- wrapper که کلیک را دریافت می‌کند -->
+        <a-entity id="columnWrapper" position="0 0 0" rotation="-90 0 0" column-interaction>
+          <!-- مدل داخل wrapper -->
+          <a-entity id="columnModelEntity" gltf-model="#columnModel" scale="0.03 0.03 0.03" position="0 0 0"></a-entity>
+        </a-entity>
 
-        <!-- TEXT -->
+        <!-- متن مشخصات (از &#10; برای newline در HTML استفاده شده) -->
         <a-text id="infoText"
-          value="ستون 30x30 &#10; میلگرد 16 &#10; بتن C30"
-          position="0 1 0"
-          align="center"
-          color="yellow"
-          visible="false">
+                value="ستون 30x30 &#10; میلگرد Φ16 &#10; بتن C30"
+                position="0 1.2 0"
+                align="center"
+                color="yellow"
+                visible="false"
+                wrap-count="20"
+                >
         </a-text>
 
-        <!-- SHADOW RECEIVER -->
-        <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4"
-                 color="#fff" opacity="0" shadow="receive: true">
-        </a-plane>
+        <!-- صفحه شفاف برای دریافت سایه/کلیک بهتر -->
+        <a-plane id="touchPlane" position="0 0 0" rotation="-90 0 0" width="2" height="2" opacity="0" material="opacity:0"></a-plane>
 
       </a-marker>
 
-      <!-- CAMERA -->
-      <a-entity camera look-controls cursor="fuse: false; rayOrigin: mouse"
-                raycaster="objects: .clickable"></a-entity>
+      <!-- دوربین و raycaster اشاره‌گر روی wrapper -->
+      <a-entity camera look-controls cursor="rayOrigin: mouse" raycaster="objects: #columnWrapper, #touchPlane"></a-entity>
 
     </a-scene>
 
     <script src="app.js"></script>
-
   </body>
 </html>
