@@ -59,3 +59,44 @@ AFRAME.registerComponent('column-interaction', {
     }
   }
 });
+
+
+window.addEventListener('DOMContentLoaded', () => {
+
+  const wrapper = document.querySelector('#columnWrapper');
+  const infoText = document.querySelector('#infoText');
+  let scaleState = 0;
+  let materialState = 0;
+
+  // تغییر متریال
+  document.querySelector('#btnMaterial').addEventListener('click', () => {
+    materialState++;
+
+    if (materialState % 3 === 1) {
+      wrapper.setAttribute('material', 'color: gray');   // بتن
+    } 
+    else if (materialState % 3 === 2) {
+      wrapper.setAttribute('material', 'color: silver'); // فولادی
+    }
+    else {
+      wrapper.setAttribute('material', 'color: green');  // رنگی
+    }
+  });
+
+  // تغییر اندازه
+  document.querySelector('#btnScale').addEventListener('click', () => {
+    scaleState++;
+
+    if (scaleState % 3 === 1) wrapper.setAttribute('scale', '1.2 1.2 1.2');
+    else if (scaleState % 3 === 2) wrapper.setAttribute('scale', '1.5 1.5 1.5');
+    else wrapper.setAttribute('scale', '1 1 1');
+  });
+
+  // نمایش/مخفی‌سازی متن
+  document.querySelector('#btnInfo').addEventListener('click', () => {
+    const v = infoText.getAttribute('visible');
+    infoText.setAttribute('visible', !v);
+  });
+
+});
+
