@@ -5,57 +5,65 @@
     <title>Concrete AR Demo</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
+    <style> body{margin:0;overflow:hidden;} </style>
   </head>
 
   <body>
-    <a-scene embedded arjs>
+
+    <a-scene
+      embedded
+      renderer="logarithmicDepthBuffer: true; colorManagement: true; shadowMapEnabled: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;
+            smoothing: true; smoothingFactor: 0.1;"
+    >
+
       <!-- SOURCE -->
       <a-assets>
         <a-asset-item id="columnModel" src="column.glb"></a-asset-item>
       </a-assets>
-      <!-- ENV LIGHT -->
+
+      <!-- LIGHTS -->
       <a-entity light="type: ambient; intensity: 0.7"></a-entity>
-      <!-- DIC LIGHT -->
       <a-entity light="type: directional; castShadow: true; intensity: 1" position="1 3 2"></a-entity>
-      
+
+      <!-- MARKER -->
       <a-marker type="pattern" url="pattern-concrete.patt">
+
+        <!-- MODEL (Clickable) -->
         <a-entity
+          class="clickable"
           gltf-model="#columnModel"
-          position="1 -5 0"
-          rotation="-90 0 0"
-          scale="0.03 0.03 0.03"
+          material="color: gray"
           shadow="cast: true; receive: true"
+          scale="0.03 0.03 0.03"
+          position="0 0 0"
+          rotation="-90 0 0"
           column-interaction
         ></a-entity>
 
-        <!-- Add Text -->
+        <!-- TEXT -->
         <a-text id="infoText"
-          value="ستون 30x30 \n میلگرد 16 \n بتن C30"
+          value="ستون 30x30 &#10; میلگرد 16 &#10; بتن C30"
           position="0 1 0"
           align="center"
           color="yellow"
-          visible="false"
-          scale="1 1 1">
+          visible="false">
         </a-text>
-        
-        <!-- TRANPARENT EARTH -->
-        <a-plane position="0 0 0"
-             rotation="-90 0 0"
-             width="4"
-             height="4"
-             color="#ffffff"
-             opacity="0"
-             shadow="receive: true">
+
+        <!-- SHADOW RECEIVER -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4"
+                 color="#fff" opacity="0" shadow="receive: true">
         </a-plane>
-        
+
       </a-marker>
-      <!-- <a-entity camera></a-entity> -->
-      <a-entity camera look-controls cursor="fuse: false; rayOrigin: mouse"></a-entity>
+
+      <!-- CAMERA -->
+      <a-entity camera look-controls cursor="fuse: false; rayOrigin: mouse"
+                raycaster="objects: .clickable"></a-entity>
 
     </a-scene>
-      <script src="app.js"></script>
+
+    <script src="app.js"></script>
+
   </body>
 </html>
