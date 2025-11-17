@@ -67,21 +67,52 @@ window.addEventListener('DOMContentLoaded', () => {
   const infoText = document.querySelector('#infoText');
   let scaleState = 0;
   let materialState = 0;
+  let modelEl = document.querySelector('#columnModelEntity');
+  let modelMesh = null;
 
-  // تغییر متریال
-  document.querySelector('#btnMaterial').addEventListener('click', () => {
-    materialState++;
+// وقتی مدل glb لود شد، آبجکت three.js آن را بگیر
+modelEl.addEventListener('model-loaded', () => {
+  modelMesh = modelEl.getObject3D('mesh');
+});
 
-    if (materialState % 3 === 1) {
-      wrapper.setAttribute('material', 'color: gray');   // بتن
-    } 
-    else if (materialState % 3 === 2) {
-      wrapper.setAttribute('material', 'color: silver'); // فولادی
-    }
-    else {
-      wrapper.setAttribute('material', 'color: green');  // رنگی
+  function setModelColor(colorHex) {
+  if (!modelMesh) return;
+
+  modelMesh.traverse(node => {
+    if (node.isMesh && node.material) {
+
+      // اگر مدل چند material داشت
+      if (Array.isArray(node.material)) {
+        node.material.forEach(m => {
+          if (m.color) m.color.set(colorHex);
+          m.needsUpdate = true;
+        });
+      } else {
+        if (node.material.color) node.material.color.set(colorHex);
+        node.material.needsUpdate = true;
+      }
     }
   });
+}
+
+
+  // تغییر متریال
+ let materialState = 0;
+
+document.querySelector('#btnMaterial').addEventListener('click', () => {
+  materialState++;
+
+  if (materialState % 3 === 1) {
+    setModelColor("#9b9b9b");   // بتن خاکستری
+  }
+  else if (materialState % 3 === 2) {
+    setModelColor("#c0c0c0");   // فولادی/نقره‌ای
+  }
+  else {
+    setModelColor("#2ecc71");   // سبز رنگی
+  }
+});
+
 
   // تغییر اندازه
   document.querySelector('#btnScale').addEventListener('click', () => {
